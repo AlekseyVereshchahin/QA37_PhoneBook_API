@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class DeleteContactsByIdOkhttp {
@@ -20,6 +21,7 @@ public class DeleteContactsByIdOkhttp {
 
     @BeforeMethod
     public void preCondition() throws IOException {
+
         ContactRequestDTO contact = ContactRequestDTO.builder()
                 .name("Alex")
                 .lastName("Lord")
@@ -31,6 +33,7 @@ public class DeleteContactsByIdOkhttp {
         RequestBody body = RequestBody.create(gson.toJson(contact), JSON);
         Request request = new Request.Builder()
                 .url("https://contactapp-telran-backend.herokuapp.com/v1/contacts")
+                .addHeader("Authorization",token)
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
@@ -38,7 +41,11 @@ public class DeleteContactsByIdOkhttp {
         Assert.assertTrue(response.isSuccessful());
 
         ContactResponseDTO dto = gson.fromJson(response.body().string(), ContactResponseDTO.class);
-        System.out.println(dto);
+        System.out.println(dto.getMessage());
+
+        String [] all=dto.getMessage().split(" ID: ");
+        id=all[1];
+        System.out.println(id);
     }
 
     @Test

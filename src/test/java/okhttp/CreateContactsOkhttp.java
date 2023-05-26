@@ -18,19 +18,9 @@ public class CreateContactsOkhttp {
     public static final MediaType JSON = MediaType.get("application/json;charset=utf-8");
     String id;
 
-    @BeforeMethod
-    private void preConditionAuth() throws IOException {
-        Request request = new Request.Builder()
-                .url("https://contactapp-telran-backend.herokuapp.com/v1/contacts")
-                .get()
-                .addHeader("Authorization",token)
-                .build();
 
-        Response response = client.newCall(request).execute();
-        Assert.assertTrue(response.isSuccessful());
-        Assert.assertEquals(response.code(),200);
-        System.out.println(response.code());
-    }
+
+
 
 
     @Test
@@ -50,6 +40,7 @@ public class CreateContactsOkhttp {
         RequestBody body = RequestBody.create(gson.toJson(contact), JSON);
         Request request = new Request.Builder()
                 .url("https://contactapp-telran-backend.herokuapp.com/v1/contacts")
+                .addHeader("Authorization",token)
                 .post(body)
                 .build();
 
